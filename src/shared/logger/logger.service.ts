@@ -3,6 +3,7 @@ import { createLogger, Logger, transports } from "winston"
 
 import { RequestContext } from "../request-context/request-context"
 
+// TODO Should implement interface
 @Injectable({ scope: Scope.TRANSIENT })
 export class AppLogger {
 	private context?: string
