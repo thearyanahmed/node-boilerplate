@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Node API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a demo project repository. This repository consists of the following
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- How to get configuration (env variables and/or config files)
+- How to add instrumentation
+  - Defining errors and context
+  - How to write logs
+- How to write a basic api (ie, which frameworks we want to support)
+- More
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Running this project
+After git clone, run the following commands,
 
 ```bash
-$ npm install
+cp .env.example .env
 ```
-
-## Running the app
+Update the values if necessary.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
-
-## Test
 
 ```bash
-# unit tests
-$ npm run test
+npm run start
+```
+And it should start on the port set in your `.env`.
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+To run in `--watch` mode,
+```bash
+npm run start:dev
 ```
 
-## Support
+To start the project with node's debug level turned on,
+```bash
+chmod +x run-debug
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+./run-debug
+```
+It will also start the project in watch mode.
 
-## Stay in touch
+## How to get configuration (env variables and/or config files)
+Our goal is to read value from the environment. This way, we can continue to develop, build
+containers and even use tools like kubernetes without having to rebuilding our image everytime a single value changes.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+With sensitive data, we will use secrets for that appropriate action. E.g: For kubernetes, we can use secrets manager with 3rd party encryption plugins.
 
-## License
+### Reading Configuration Values
+Instead of calling `process.env` all over our code, we will use a dedicated config service, which should respect the following interface.
+```typescript
+interface ConfigServiceInterface {
+  source(source: ConfigSource)  
+  get<Type>(arg : Type) : Type
+}
 
-Nest is [MIT licensed](LICENSE).
+enum ConfigSource {
+   ENV, YML, YMAL, JSON, // etc
+}
+```
+In simpler words, our config service will have a `get` function to retrieve values. And a `source` function that will set the source of configuration values.
+
+For this project, we are using nest js's default config service. 
+
+## How to add instrumentation
+**Instrumentation** Instrumentation refers to an ability to monitor or measure the level of a product's performance, to diagnose errors and to write trace information.
+
+We'll cover the following topics,
+- Defining errors and context
+- How to write logs
+- How to report metrics
+- How to set debug levels
+- How to report traces
+
