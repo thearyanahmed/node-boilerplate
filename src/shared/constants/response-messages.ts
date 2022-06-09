@@ -1,0 +1,6 @@
+export const CreatedSuccessfullyWith = "%s has been created successfully."
+export const UpdatedSuccessfullyWith = "%s with id %s has been updated successfully."
+export const DeletedSuccessfullyWith = "%s with id %s has been deleted successfully."
+export const IdDoesNotExist = "%s with id %s does not exists."
+export const SorrySomethingWentWrong = "sorry something went wrong."
+export const NothingToUpdate = "nothing to update."
