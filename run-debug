@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ NODE_ENV=dev DEBUG=* npm run start:dev
+
