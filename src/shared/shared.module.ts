@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configModuleOptions } from './configs/module-options';
-import { AppLoggerModule } from './logger/logger.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
@@ -40,9 +39,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
         limit: config.get<number>('throttler.limit'),
       }),
     }),
-    AppLoggerModule,
   ],
-  exports: [AppLoggerModule, ConfigModule],
+  exports: [ConfigModule],
   providers: [],
 })
 export class SharedModule {}

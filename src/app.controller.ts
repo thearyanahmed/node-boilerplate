@@ -1,8 +1,8 @@
-import { Controller, Get, HttpCode, HttpStatus, NotFoundException } from '@nestjs/common'
+import { Controller, Get, HttpCode, HttpStatus, Inject, NotFoundException , LoggerService} from '@nestjs/common'
 import { AppService } from './app.service';
-import { AppLogger } from "./shared/logger/logger.service"
 import { RequestContext } from "./shared/request-context/request-context"
 import { ReqContext } from "./shared/request-context/req-context.decorator"
+import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston"
 
 
 type JsonResponse = Record<string, any>
@@ -11,9 +11,9 @@ type JsonResponse = Record<string, any>
 export class AppController {
   constructor(
       private readonly appService: AppService,
-      private readonly logger: AppLogger,
+      @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
   ) {
-    this.logger.setContext("AppController")
+    this.logger.log("AppController")
   }
 
   @Get("/")
@@ -21,7 +21,7 @@ export class AppController {
   get_hello(
       @ReqContext() ctx: RequestContext,
   ): JsonResponse {
-    this.logger.log(ctx,"call to get hello route")
+    this.logger.log("call to hello world")
 
     const hello_service_value = this.appService.get_hello_service_method(ctx);
 

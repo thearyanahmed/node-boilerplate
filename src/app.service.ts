@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { AppLogger } from "./shared/logger/logger.service"
+import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import { RequestContext } from "./shared/request-context/request-context"
+import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston"
 
 /**
  * AppService consists of a service layer functions of the AppModule.
@@ -11,9 +11,9 @@ export class AppService {
   /**
    * @param logger AppLogger
    */
-  constructor(private readonly logger: AppLogger) {
-    this.logger.setContext("AppService")
-  }
+  constructor(
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
+  ) {}
 
   /**
    * @returns string
