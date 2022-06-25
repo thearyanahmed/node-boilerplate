@@ -105,6 +105,49 @@ we could log,
 Connecting to database db=foobar username=root password=[SENSITIVE-DATA]
 ```
 
+**Logging in general** The logger instance has different logger methods, and each takes different arguments. To make sure the logger is being formatted the same way across the board take note of the following:
+
+```javascript
+debug(message: any, context?: string)
+log(message: any, context?: string)
+error(message: any, stack?: string, context?: string)
+verbose(message: any, context?: string)
+warn(message: any, context?: string)
+```
+
+Example
+
+```typescript
+import { Controller, Get, Logger } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(
+    private readonly appService: AppService,
+    private readonly logger: Logger,
+  ) {}
+
+  @Get()
+  getHello(): string {
+    this.logger.log('Calling getHello()', AppController.name);
+    this.logger.debug('Calling getHello()', AppController.name);
+    this.logger.verbose('Calling getHello()', AppController.name);
+    this.logger.warn('Calling getHello()', AppController.name);
+
+    try {
+      throw new Error()
+    } catch (e) {
+      this.logger.error('Calling getHello()', e.stack, AppController.name);
+    }
+
+    return this.appService.getHello();
+  }
+}
+```
+
+Make sure to set `DEFAULT_LOG_LEVEL` and `LOG_CHANNEL` in your `.env` .
+
 ## Code Comments 
 While commenting is an anti-pattern, we would still prefer to write comments. Comments with context.
 A comment above/inside a function, explaining the scenario is always better than having to guess by reading the code.
@@ -142,16 +185,16 @@ In our case, we are using [typeorm](typeorm.io) to support us with database enti
 ## Connecting to the database,
 We are currently using `mysql`. Our required `.env` variables are as follows,
 
-```
+```typescript
 # src/shared/configs/configuration.ts
 database: {
-		connection_name: process.env.CONNECTION_NAME,
-		host: process.env.DB_HOST,
-		port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined,
-		name: process.env.DB_NAME,
-		user: process.env.DB_USER,
-		pass: process.env.DB_PASS,
-	},
+	connection_name: process.env.CONNECTION_NAME,
+	host: process.env.DB_HOST,
+	port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined,
+	name: process.env.DB_NAME,
+	user: process.env.DB_USER,
+	pass: process.env.DB_PASS,
+},
 ```
 
 The database connection is part of the `SharedModule`. And the `SharedModule` is included in the `AppModule`'s import.
