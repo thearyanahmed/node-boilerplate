@@ -1,5 +1,20 @@
 version: '3'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run start
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - "${CONTAINER_APP_PORT}:3000"
+    networks:
+      - appnet
+    depends_on:
+      - app_db
+
   app_db:
     container_name: "app_db_container"
     image: "mysql:8"
@@ -8,9 +23,9 @@ services:
     # options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     environment:
       - "MYSQL_DATABASE=${DB_NAME}"
-      - "MYSQL_USER=${DB_USER}"
+      - "MYSQL_USER=some_user"
+      - "MYSQL_ROOT_PASSWORD=${DB_PASS}"
       - "MYSQL_PASSWORD=${DB_PASS}"
-      - "MYSQL_ROOT_PASSWORD=toor"
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./config/mysql_default_auth_plugin.cnf:/etc/mysql/conf.d/my.cnf
