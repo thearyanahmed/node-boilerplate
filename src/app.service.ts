@@ -20,6 +20,7 @@ export class AppService {
    * @param ctx RequestContext
    */
   get_hello_service_method(ctx: RequestContext): string {
+    this.logger.verbose(ctx, "call to hello world")
     this.logger.log(ctx,"call get_hello_service_method")
 
     return 'Hello World!';

@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { RequestContext } from "./shared/request-context/request-context"
 import { ReqContext } from "./shared/request-context/req-context.decorator"
 import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston"
+import { Logger } from 'winston'
 
 
 type JsonResponse = Record<string, any>
@@ -13,7 +14,7 @@ export class AppController {
       private readonly appService: AppService,
       @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService
   ) {
-    this.logger.log("AppController")
+    // this.logger.log("AppController")
   }
 
   @Get("/")

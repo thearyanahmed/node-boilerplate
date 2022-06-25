@@ -1,15 +1,45 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger, Inject } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SharedModule } from "./shared/shared.module"
-import { WinstonModule } from "nest-winston"
+import { LoggerConfig } from './shared/configs/logging-config';
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from "nest-winston"
+import * as winston from "winston"
+
+// const logger: LoggerConfig = new LoggerConfig()
+// logger.console()
 
 @Module({
   imports: [
-    WinstonModule.forRootAsync({}),
-    SharedModule,
+    WinstonModule.forRoot({
+      // options
+      // useFactory: () => ({
+      //   level: 'info',
+      //   format: winston.format.json(),
+      // }),
+      // inject: []
+      // transport: [
+        transports: [
+          (process.env.LOG_CHANNEL === 'file') ?
+            new winston.transports.File({
+              filename: 'logger/logfile.log',
+              level: process.env.DEFAULT_LOG_LEVEL || 'error',
+            }) :
+            new winston.transports.Console({
+              level: process.env.DEFAULT_LOG_LEVEL || 'warn',
+              format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.ms(),
+                nestWinstonModuleUtilities.format.nestLike('NodeAPI', { prettyPrint: true }),
+              ),
+            }),
+          // other transports...
+        ],
+        // other options
+    }),
+    SharedModule, 
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}
