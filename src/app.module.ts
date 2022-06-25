@@ -2,12 +2,9 @@ import { Module, Logger, Inject } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SharedModule } from "./shared/shared.module"
-import { LoggerConfig } from './shared/configs/logging-config';
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from "nest-winston"
 import * as winston from "winston"
 
-// const logger: LoggerConfig = new LoggerConfig()
-// logger.console()
 
 @Module({
   imports: [

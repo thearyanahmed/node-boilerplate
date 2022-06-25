@@ -3,8 +3,6 @@ import { AppService } from './app.service';
 import { RequestContext } from "./shared/request-context/request-context"
 import { ReqContext } from "./shared/request-context/req-context.decorator"
 import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston"
-import { Logger } from 'winston'
-
 
 type JsonResponse = Record<string, any>
 
