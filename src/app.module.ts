@@ -1,21 +1,13 @@
-import { Module, Logger, Inject } from '@nestjs/common';
+import { Module, Logger} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SharedModule } from "./shared/shared.module"
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from "nest-winston"
 import * as winston from "winston"
 
-
 @Module({
   imports: [
     WinstonModule.forRoot({
-      // options
-      // useFactory: () => ({
-      //   level: 'info',
-      //   format: winston.format.json(),
-      // }),
-      // inject: []
-      // transport: [
         transports: [
           (process.env.LOG_CHANNEL === 'file') ?
             new winston.transports.File({
@@ -32,7 +24,6 @@ import * as winston from "winston"
             }),
           // other transports...
         ],
-        // other options
     }),
     SharedModule, 
   ],
