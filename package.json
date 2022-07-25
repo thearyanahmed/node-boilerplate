@@ -28,12 +28,13 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/throttler": "^2.0.1",
     "@nestjs/typeorm": "^8.1.2",
+    "kafkajs": "^2.1.0",
     "mysql2": "^2.3.3",
+    "nest-winston": "^1.6.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "winston": "^3.7.2",
-    "nest-winston": "^1.6.2"
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
