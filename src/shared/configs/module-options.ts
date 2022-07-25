@@ -14,7 +14,7 @@ export const configModuleOptions: ConfigModuleOptions = {
 		DB_PORT: Joi.number().optional(),
 		DB_NAME: Joi.string().required(),
 		DB_USER: Joi.string().required(),
-		DB_PASS: Joi.string().required(),
+		DB_PASS: Joi.string().optional(),
 
 		THROTTLE_TTL: Joi.number().required(),
 		THROTTLE_LIMIT: Joi.number().required(),
